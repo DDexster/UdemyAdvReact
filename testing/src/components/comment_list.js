@@ -1,20 +1,23 @@
-import React from 'react';
+import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
 const CommentList = (props) => {
-    const commentList = props.comments.map(comment =>
-        <li className="list-group-item" key={comment}>{comment}</li>
+    const commentList = props.comments.map((comment, index) =>
+        <li className="list-group-item" key={index}>{comment}</li>
     );
 
     return (
-        <ul className="comment-list list-group">
-            {commentList}
-        </ul>
+        <div>
+            <h4>Comment list:</h4>
+            <ul className="comment-list list-group">
+                {commentList}
+            </ul>
+        </div>
     )
 };
 
-const mapStateToProps = state => {
-    return { comments: state.comments };
+const mapStateToProps = ({ comments }) => {
+    return { comments };
 };
 
 export default connect(mapStateToProps)(CommentList);
