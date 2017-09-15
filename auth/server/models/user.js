@@ -11,14 +11,14 @@ const userSchema = new Schema({
     password: String
 });
 
-userSchema.pre("save", function (next) {
+userSchema.pre("save", function(next) {
     const user = this;
 
-    bcrypt.genSalt(10, function (err, salt) {
+    bcrypt.genSalt(10, function(err, salt) {
         if (err) {
             return next(err);
         }
-        bcrypt.hash(user.password, salt, null, function (err, hash) {
+        bcrypt.hash(user.password, salt, null, function(err, hash) {
             if (err) {
                 return next(err);
             }
@@ -27,6 +27,15 @@ userSchema.pre("save", function (next) {
         });
     });
 });
+
+userSchema.methods.comparePassword = function(candidatePassword, callback) {
+    bcrypt.compare(candidatePassword, this.password, function(err, isMatch) {
+        if (err) {
+            return callback(err);
+        }
+        callback(null, isMatch);
+    });
+};
 
 const ModelClass = mongoose.model("user", userSchema);
 
