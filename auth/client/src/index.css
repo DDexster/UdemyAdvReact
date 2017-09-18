@@ -8,3 +8,14 @@ body {
     max-width : 400px;
     margin    : 50px auto;
 }
+
+.signup {
+    max-width : 400px;
+    margin    : 50px auto;
+}
+
+.signout {
+    margin    : 150px auto;
+    max-width : 400px;
+
+}

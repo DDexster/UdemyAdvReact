@@ -1,9 +1,21 @@
 import React, { Component } from "react";
 import { Field, reduxForm } from "redux-form";
+import * as actions from "../../actions";
+import { connect } from "react-redux";
 
 class SignIn extends Component {
     handleFormSubmit({ email, password }) {
-        console.log(email, password);
+        this.props.signInUser({ email, password, history: this.props.history });
+    }
+
+    renderAlert(){
+        if (this.props.errorMessage) {
+            return (
+                <div className="alert alert-danger">
+                    <strong>Ooops!</strong> {this.props.errorMessage}
+                </div>
+            )
+        }
     }
 
     render() {
@@ -27,6 +39,7 @@ class SignIn extends Component {
                            placeholder="Password..."
                            className="form-control" />
                 </fieldset>
+                {this.renderAlert()}
                 <button action="submit"
                         className="btn btn-primary">Sign in
                 </button>
@@ -39,4 +52,8 @@ const formOptions = {
     form: "signin"
 };
 
-export default reduxForm(formOptions)(SignIn);
+const mapStateToProps = ({ auth }) => {
+    return { errorMessage: auth.error };
+};
+
+export default reduxForm(formOptions)(connect(mapStateToProps, actions)(SignIn));
