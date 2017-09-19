@@ -1,5 +1,5 @@
 import axios from "axios";
-import { AUTH_USER, AUTH_ERR, UNAUTH_USER } from "./types";
+import { AUTH_USER, AUTH_ERR, UNAUTH_USER, FETCH_MESSAGE } from "./types";
 
 const API_URL = process.env.ROOT_URL || "http://localhost:8080";
 
@@ -33,10 +33,7 @@ export function signUpUser({ email, password, history }) {
                 history.push("/feature");
             })
             .catch(() => {
-                dispatch({
-                    type: AUTH_ERR,
-                    payload: "An Email is in Use!"
-                })
+                dispatch(authError("Email is in use!"));
             })
     };
 }
@@ -45,6 +42,17 @@ export function signUpUser({ email, password, history }) {
 export function signOutUser() {
     localStorage.removeItem("token");
     return { type: UNAUTH_USER };
+}
+
+export function fetchMessage() {
+    return dispatch => {
+        axios.get(`${API_URL}`, {
+            headers: {authorization: localStorage.getItem('token')}
+        })
+            .then(response => {
+                dispatch({type: FETCH_MESSAGE, payload: response.data.message})
+            })
+    }
 }
 
 export function authError(error) {

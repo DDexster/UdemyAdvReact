@@ -26,6 +26,7 @@ class SignUp extends Component {
             <input
                 type={field.type}
                 className={className}
+                placeholder={`${field.label}...`}
                 {...field.input}
             />
             <div className="invalid-feedback">
